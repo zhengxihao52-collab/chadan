@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<meta name="robots" content="noindex,nofollow">
+<title>小包子的脐橙 · 查快递</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#FFF6EC;color:#3B2A1A;font-family:-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;font-size:15px;-webkit-text-size-adjust:100%}
+.hero{background:linear-gradient(160deg,#FFB347 0%,#FF7A00 100%);color:#fff;padding:28px 20px 48px;text-align:center;border-radius:0 0 24px 24px}
+.hero .e{font-size:44px;line-height:1.1}.hero h1{font-size:22px;margin:6px 0 0;font-weight:700}.hero p{font-size:14px;opacity:.92;margin:6px 0 0}
+.wrap{max-width:480px;margin:-32px auto 0;padding:0 16px 24px}
+.card{background:#fff;border-radius:12px;padding:18px 16px;box-shadow:0 4px 12px rgba(255,138,31,.12);margin-bottom:14px}
+.tabs{display:flex;background:#FFF1E2;border-radius:20px;padding:3px;margin-bottom:4px}
+.tab{flex:1;text-align:center;padding:8px 0;border-radius:17px;font-size:14px;color:#B8692A;cursor:pointer;user-select:none}
+.tab.on{background:#FF8A1F;color:#fff;font-weight:600}
+label{display:block;font-size:14px;color:#7A5B3E;margin:12px 0 6px}
+input{width:100%;background:#FFF8F0;border:1px solid #FFD8B0;border-radius:8px;height:46px;padding:0 12px;font-size:16px;color:#3B2A1A;outline:none;-webkit-appearance:none}
+input:focus{border-color:#FF8A1F}
+.btn{display:block;width:100%;border:0;background:linear-gradient(90deg,#FF9A2E,#FF6A00);color:#fff;border-radius:24px;font-size:17px;font-weight:600;padding:12px 0;margin-top:18px;cursor:pointer}
+.btn[disabled]{opacity:.7}
+.ghost{display:block;margin:4px auto 0;border:0;background:#FFF1E2;color:#E46A00;border-radius:20px;padding:9px 24px;font-size:14px}
+.muted{color:#9A836C;font-size:13px;line-height:1.6}
+.msg{margin-top:10px;color:#D9480F;font-size:13px;line-height:1.6;background:#FFF0E6;padding:8px 10px;border-radius:6px}
+.head{font-size:18px;font-weight:700;color:#C25400;margin:4px 0 12px;background:#fff;border-radius:12px;padding:12px 16px;box-shadow:0 4px 12px rgba(255,138,31,.12)}
+.sc{background:#fff;border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 4px 12px rgba(255,138,31,.12);border-top:4px solid #FF8A1F}
+.sc-top{display:flex;justify-content:space-between;align-items:center}
+.sc-product{font-size:17px;font-weight:700}
+.sc-carrier{font-size:12px;padding:3px 9px;border-radius:12px;color:#fff;background:#E1251B}.sc-carrier.sf{background:#1A1A1A}
+.sc-no-row{display:flex;align-items:center;justify-content:space-between;background:#FFF6EC;border-radius:8px;padding:10px 11px;margin:12px 0}
+.sc-no{font-family:Menlo,Consolas,monospace;font-size:17px;letter-spacing:1px;color:#C25400;font-weight:600;word-break:break-all;-webkit-user-select:all;user-select:all}
+.sc-copy{border:0;background:#FF8A1F;color:#fff;border-radius:15px;padding:6px 12px;font-size:13px;margin-left:8px;white-space:nowrap}
+.grid{display:flex;flex-wrap:wrap}.grid>div{width:50%;margin-bottom:7px}
+.k{display:block;font-size:12px;color:#9A836C}.v{display:block;font-size:15px}
+.hint{font-size:12px;color:#7A5B3E;background:#FFF8F0;border-radius:6px;padding:8px 9px;line-height:1.6;margin-top:4px}
+.hint a{color:#E46A00}
+.foot{text-align:center;color:#B08E6E;font-size:13px;margin-top:12px}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.5);border-top-color:#fff;border-radius:50%;animation:s 1s linear infinite;vertical-align:-2px;margin-right:6px}
+@keyframes s{to{transform:rotate(360deg)}}
+.toast{position:fixed;left:50%;top:40%;transform:translateX(-50%);background:rgba(0,0,0,.75);color:#fff;padding:10px 18px;border-radius:8px;font-size:14px;display:none;z-index:9}
+</style>
+</head>
+<body>
+<div class="hero"><div class="e">🍊</div><h1>小包子的脐橙 · 查快递</h1><p>不用再等我一个个发单号啦，自己查～</p></div>
+<div class="wrap">
+  <div class="card" id="form">
+    <div class="tabs"><div class="tab on" data-mode="name">用姓名查</div><div class="tab" data-mode="tracking">用单号后4位查</div></div>
+    <div id="nameBox"><label for="name">姓名（下单人或收件人都可以）</label><input id="name" maxlength="20" placeholder="例如：张三" autocomplete="off"></div>
+    <div id="trkBox" style="display:none"><label for="trk">快递单号最后 4 位</label><input id="trk" maxlength="4" placeholder="例如：8K3Q" autocomplete="off"></div>
+    <label for="p4">收件人手机号后 4 位</label><input id="p4" maxlength="4" inputmode="numeric" pattern="[0-9]*" placeholder="例如：1234" autocomplete="off">
+    <div class="msg" id="msg" style="display:none"></div>
+    <button class="btn" id="go">查我的快递</button>
+    <div class="muted" style="margin-top:10px">🔒 只显示快递单号和城市，不显示完整电话和地址。你输入的内容只在你手机上计算，不会上传。</div>
+  </div>
+  <div id="result"></div>
+  <div class="foot">小包子的脐橙 · 不是电商货，是树上货<div class="muted">查不到的话，直接微信问我就好～</div></div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="data.js?v=c45a73d191"></script>
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var mode='name', busy=false;
+  // —— 与 shared/lib.js / kd_parse.py 完全一致的规范化 ——
+  function nfkc(s){return String(s||'').normalize?String(s||'').normalize('NFKC'):String(s||'')}
+  function normName(s){return nfkc(s).trim().replace(/[\s·•.。,，、\-_()（）]/g,'').toLowerCase()}
+  function digits(s){return nfkc(s).replace(/\D/g,'')}
+  function normTrk(s){return nfkc(s).replace(/[\s\-]/g,'').toUpperCase()}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function b64d(s){var b=atob(s),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u}
+  function hex(buf){return Array.prototype.map.call(new Uint8Array(buf),function(x){return('0'+x.toString(16)).slice(-2)}).join('')}
+  function toast(t){var e=$('toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(function(){e.style.display='none'},1600)}
+  function showMsg(t){var m=$('msg');m.textContent=t||'';m.style.display=t?'block':'none'}
+
+  [].forEach.call(document.querySelectorAll('.tab'),function(t){t.onclick=function(){
+    mode=t.getAttribute('data-mode');
+    [].forEach.call(document.querySelectorAll('.tab'),function(x){x.classList.toggle('on',x===t)});
+    $('nameBox').style.display=mode==='name'?'':'none';$('trkBox').style.display=mode==='tracking'?'':'none';showMsg('');
+  }});
+
+  async function lookup(password){
+    var D=window.KD_DATA, enc=new TextEncoder();
+    var base=await crypto.subtle.importKey('raw',enc.encode(password),'PBKDF2',false,['deriveBits']);
+    var bits=new Uint8Array(await crypto.subtle.deriveBits({name:'PBKDF2',hash:'SHA-256',salt:b64d(D.salt),iterations:D.iter},base,512));
+    var id=hex(await crypto.subtle.digest('SHA-256',bits.slice(32))).slice(0,24);
+    var entries=D.d[id]; if(!entries) return [];
+    var key=await crypto.subtle.importKey('raw',bits.slice(0,32),'AES-GCM',false,['decrypt']);
+    var out=[];
+    for(var i=0;i<entries.length;i++){
+      try{var pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64d(entries[i][0])},key,b64d(entries[i][1]));out.push(JSON.parse(new TextDecoder().decode(pt)))}catch(e){}
+    }
+    return out;
+  }
+  function card(x){
+    var sf=/顺丰/.test(x.carrier), jd=/京东/.test(x.carrier);
+    var url=sf?'https://www.sf-express.com/chn/sc/waybill/waybill-detail/'+encodeURIComponent(x.trackingNo):jd?'https://www.jdl.com/orderSearch/?waybillCodes='+encodeURIComponent(x.trackingNo):'';
+    var hint=sf?'微信搜「顺丰速运」小程序 → 查快递 → 粘贴单号（需要验证收件手机后 4 位）':jd?'微信搜「京东快递」小程序 → 查快递 → 粘贴单号':'在快递公司官方小程序里粘贴单号查询';
+    return '<div class="sc"><div class="sc-top"><span class="sc-product">🍊 '+esc(x.product)+'</span><span class="sc-carrier'+(sf?' sf':'')+'">'+esc(x.carrier)+'</span></div>'+
+      '<div class="sc-no-row"><span class="sc-no">'+esc(x.trackingNo)+'</span><button class="sc-copy" data-no="'+esc(x.trackingNo)+'">复制单号</button></div>'+
+      '<div class="grid"><div><span class="k">收件人</span><span class="v">'+esc(x.recipientMasked)+'</span></div><div><span class="k">寄往</span><span class="v">'+esc(x.city||'—')+'</span></div>'+
+      '<div><span class="k">数量</span><span class="v">'+(x.boxes?esc(x.boxes)+' 箱':'—')+'</span></div><div><span class="k">规格</span><span class="v">'+esc(x.weight||'—')+'</span></div>'+
+      '<div><span class="k">录入日期</span><span class="v">'+esc(x.shipDate)+'</span></div></div>'+
+      '<div class="hint">📦 查物流：'+hint+(url?'<br>或 <a href="'+url+'" target="_blank" rel="noopener">打开快递官网查询 ›</a>':'')+'</div></div>';
+  }
+  function copy(t){
+    function fallback(){var a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();a.setSelectionRange(0,99);var ok=false;try{ok=document.execCommand('copy')}catch(e){}document.body.removeChild(a);toast(ok?'单号已复制':'请长按单号复制')}
+    if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(t).then(function(){toast('单号已复制')},fallback)}else fallback();
+  }
+  $('result').addEventListener('click',function(e){
+    var b=e.target.closest('.sc-copy'); if(b) copy(b.getAttribute('data-no'));
+    if(e.target.id==='again'){ $('result').innerHTML=''; $('form').style.display=''; window.scrollTo(0,0); }
+  });
+  $('go').onclick=async function(){
+    if(busy) return;
+    var p4=digits($('p4').value), pw;
+    if(!/^\d{4}$/.test(p4)||digits($('p4').value).length!==4) return showMsg('请输入收件人手机号的后 4 位数字');
+    if(mode==='name'){var n=normName($('name').value); if(!n) return showMsg('请输入下单人或收件人的姓名'); pw='n|'+n+'|'+p4;}
+    else{var t=normTrk($('trk').value); if(!/^[0-9A-Z]{4}$/.test(t)) return showMsg('请输入快递单号最后 4 位'); pw='t|'+p4+'|'+t;}
+    if(!window.crypto||!crypto.subtle||!window.KD_DATA) return showMsg('当前浏览器不支持安全查询，请点右上角「…」用浏览器打开，或直接微信问我');
+    busy=true; showMsg(''); var btn=$('go'); btn.disabled=true; btn.innerHTML='<span class="spin"></span>正在安全查询…';
+    try{
+      var list=await lookup(pw);
+      if(!list.length){showMsg('没查到。请确认姓名是下单人或收件人的名字、手机号是收件人的后 4 位；刚发货的可能还没录入。');return}
+      list.sort(function(a,b){return String(b.shipDate).localeCompare(String(a.shipDate))});
+      $('result').innerHTML='<div class="head">找到 '+list.length+' 个包裹 🎉</div>'+list.map(card).join('')+
+        '<div class="muted" style="margin:4px 4px 14px">复制单号后，到「京东快递」或「顺丰速运」小程序里粘贴就能看到物流进度。</div><button class="ghost" id="again">再查一个</button>';
+      $('form').style.display='none'; window.scrollTo(0,0);
+    }catch(e){showMsg('查询出错了，请刷新再试，或直接微信问我')}
+    finally{busy=false;btn.disabled=false;btn.textContent='查我的快递'}
+  };
+})();
+</script>
+</body>
+</html>
