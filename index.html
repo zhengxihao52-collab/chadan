@@ -58,7 +58,7 @@ input:focus{border-color:#FF8A1F}
   <div class="foot">小包子的脐橙 · 不是电商货，是树上货<div class="muted">查不到的话，直接微信问我就好～</div></div>
 </div>
 <div class="toast" id="toast"></div>
-<script src="data.js?v=8dc0575b32"></script>
+<script src="data.js?v=f0efcf619c"></script>
 <script>
 (function(){
   var $=function(id){return document.getElementById(id)};
@@ -101,7 +101,7 @@ input:focus{border-color:#FF8A1F}
       '<div class="sc-no-row"><span class="sc-no">'+esc(x.trackingNo)+'</span><button class="sc-copy" data-no="'+esc(x.trackingNo)+'">复制单号</button></div>'+
       '<div class="grid"><div><span class="k">收件人</span><span class="v">'+esc(x.recipientMasked)+'</span></div><div><span class="k">寄往</span><span class="v">'+esc(x.city||'—')+'</span></div>'+
       '<div><span class="k">数量</span><span class="v">'+(x.boxes?esc(x.boxes)+' 箱':'—')+'</span></div><div><span class="k">规格</span><span class="v">'+esc(x.weight||'—')+'</span></div>'+
-      '<div><span class="k">录入日期</span><span class="v">'+esc(x.shipDate)+'</span></div></div>'+
+      '<div><span class="k">物流状态</span><span class="v">'+esc(x.status||'—')+'</span></div><div><span class="k">录入日期</span><span class="v">'+esc(x.shipDate)+'</span></div></div>'+
       '<div class="hint">📦 查物流：'+hint+(url?'<br>或 <a href="'+url+'" target="_blank" rel="noopener">打开快递官网查询 ›</a>':'')+'</div></div>';
   }
   function copy(t){
